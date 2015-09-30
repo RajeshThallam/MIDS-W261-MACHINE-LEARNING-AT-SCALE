@@ -98,11 +98,18 @@ while(1):
             clusters[key] = codes
 
     if(stop_criterion(centroid_points_old, centroid_points, THRESHOLD)):
+        print clusters
         # display statistics
         print "cluster distribution"
         print "-" * 80
         print "iteration # {}".format(i)
         codes = { 0:'Human', 1:'Cyborg', 2:'Robot', 3:'Spammer' }
+        
+        human_total   = np.sum([clusters[k].get('0', 0) for k in clusters.keys()])
+        cyborg_total  = np.sum([clusters[k].get('1', 0) for k in clusters.keys()])
+        robot_total   = np.sum([clusters[k].get('2', 0) for k in clusters.keys()])
+        spammer_total = np.sum([clusters[k].get('3', 0) for k in clusters.keys()])
+        
         max_class = {}
         print "-" * 80
         print "{0:>5} |{1:>12} (%) |{2:>12} (%) |{3:>12} (%) |{4:>12} (%)".format("k", "Human", "Cyborg", "Robot", "Spammer")
@@ -112,13 +119,13 @@ while(1):
             print "{0:>5} | {1:>5} ({2:6.2f}%) | {3:>5} ({4:6.2f}%) | {5:>5} ({6:6.2f}%) | {7:>5} ({8:6.2f}%)".format(
                 cluster_id, 
                 cluster.get('0', 0),
-                float(cluster.get('0', 0))/total*100,
+                float(cluster.get('0', 0))/human_total*100,
                 cluster.get('1', 0),
-                float(cluster.get('1', 0))/total*100,
+                float(cluster.get('1', 0))/cyborg_total*100,
                 cluster.get('2', 0),
-                float(cluster.get('2', 0))/total*100,
+                float(cluster.get('2', 0))/robot_total*100,
                 cluster.get('3', 0),
-                float(cluster.get('3', 0))/total*100
+                float(cluster.get('3', 0))/spammer_total*100
             )
             max_class[cluster_id] = max(cluster.values())
         purity = sum(max_class.values())/1000.0*100
