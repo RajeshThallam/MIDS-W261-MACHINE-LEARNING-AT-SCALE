@@ -161,18 +161,6 @@ if __name__ == '__main__':
                .cache() )# work with either ',' or '\t' separated data
     print rawValidationData.take(1)
 
-    # ===================================================
-    # split into train, validation and test data set
-    # ===================================================
-    #weights = [.8, .1, .1]
-    #seed = 42
-    # Use randomSplit with weights and seed
-    #rawTrainData, rawValidationData, rawTestData = rawData.randomSplit(weights, seed)
-    # Cache the data
-    #rawTrainData.cache()
-    #rawValidationData.cache()
-    #rawTestData.cache()
-
     nTrain = rawTrainData.count()
     nVal = rawValidationData.count()
     nTest = rawTestData.count()
@@ -181,8 +169,9 @@ if __name__ == '__main__':
     # ===================================================
     # create hash features
     # ===================================================
-    numBucketsCTR = [1000, 10000, 10000]    # number of hash buckets
-    iteration = 0
+    #numBucketsCTR = [1000, 10000, 10000]    # number of hash buckets
+    numBucketsCTR = [10000, 100000]    # number of hash buckets
+    iteration = 12
     
     for numBuckets in numBucketsCTR:
         hashTrainData = rawTrainData.map(lambda x: parseHashPoint(x, numBuckets))
